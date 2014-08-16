@@ -28,8 +28,8 @@ lookupDefinition w ds = if w == word this
                             where this = head ds
 
 definitions :: [String] -> [Definition]
-definitions = map f where
-    f line = Definition w ss where
-        w = head ws
-        ss = tail ws
-        ws = words line
+definitions = map convertToDefinition
+
+convertToDefinition :: String -> Definition
+convertToDefinition line = Definition (head ws) (tail ws) where
+    ws = words line
