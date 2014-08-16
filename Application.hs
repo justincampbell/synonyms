@@ -6,13 +6,14 @@ data Definition = Definition { word :: String, synonyms :: [String] }
 main :: IO ()
 main = do
         args <- getArgs
-        parse args
+        contents <- readFile "synonyms.txt"
+        parse args (definitions (lines contents))
 
-parse :: [String] -> IO ()
-parse [] = do
+parse :: [String] -> [Definition] -> IO ()
+parse [] _ = do
         putStrLn "Please enter a word to lookup"
         exitFailure
-parse args = putStrLn $ formatOutput $ lookupDefinition input definitions where
+parse args ds = putStr $ formatOutput $ lookupDefinition input ds where
     input = head args
 
 formatOutput :: Maybe Definition -> String
@@ -26,5 +27,9 @@ lookupDefinition w ds = if w == word this
                             else lookupDefinition w $ tail ds
                             where this = head ds
 
-definitions :: [Definition]
-definitions = [Definition "foo" ["bar", "baz"]]
+definitions :: [String] -> [Definition]
+definitions = map f where
+    f line = Definition w ss where
+        w = head ws
+        ss = tail ws
+        ws = words line
