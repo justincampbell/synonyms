@@ -4,8 +4,13 @@ data Definition = Definition { word :: String, synonyms :: [String] }
 
 main :: IO ()
 main = do
-        [input] <- getArgs
-        putStrLn $ formatOutput $ lookupDefinition input definitions
+        args <- getArgs
+        parse args
+
+parse :: [String] -> IO ()
+parse [] = putStrLn "Please enter a word to lookup"
+parse args = putStrLn $ formatOutput $ lookupDefinition input definitions where
+    input = head args
 
 formatOutput :: Maybe Definition -> String
 formatOutput (Just definition) = unlines $ synonyms definition
