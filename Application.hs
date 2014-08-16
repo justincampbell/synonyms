@@ -1,4 +1,5 @@
 import System.Environment
+import System.Exit
 
 data Definition = Definition { word :: String, synonyms :: [String] }
 
@@ -8,7 +9,9 @@ main = do
         parse args
 
 parse :: [String] -> IO ()
-parse [] = putStrLn "Please enter a word to lookup"
+parse [] = do
+        putStrLn "Please enter a word to lookup"
+        exitFailure
 parse args = putStrLn $ formatOutput $ lookupDefinition input definitions where
     input = head args
 
