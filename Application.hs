@@ -1,15 +1,18 @@
 import System.Environment
 import System.Exit
 
-data Definition = Definition { word :: String, synonyms :: [String] }
+type Word = String
+type Synonyms = [String]
+
+data Definition = Definition { word :: Word, synonyms :: Synonyms }
 
 main :: IO ()
 main = do
         args <- getArgs
         contents <- readFile "synonyms.txt"
-        parse args (definitions (lines contents))
+        parse args $ definitions (lines contents)
 
-parse :: [String] -> [Definition] -> IO ()
+parse :: [Word] -> [Definition] -> IO ()
 parse [] _ = do
         putStrLn "Please enter a word to lookup"
         exitFailure
@@ -20,7 +23,7 @@ formatOutput :: Maybe Definition -> String
 formatOutput (Just definition) = unlines $ synonyms definition
 formatOutput Nothing = "Not found"
 
-lookupDefinition :: String -> [Definition] -> Maybe Definition
+lookupDefinition :: Word -> [Definition] -> Maybe Definition
 lookupDefinition _ [] = Nothing
 lookupDefinition w ds = if w == word this
                             then Just this
