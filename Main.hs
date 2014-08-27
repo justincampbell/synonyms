@@ -16,7 +16,7 @@ parse :: [Word] -> [Definition] -> IO ()
 parse [] _ = do
         putStrLn "Please enter a word to lookup"
         exitFailure
-parse args ds = putStr . formatOutput $ lookupDefinition input ds where
+parse args ds = putStr $ formatOutput $ lookupDefinition input ds where
     input = head args
 
 formatOutput :: Maybe Definition -> String
